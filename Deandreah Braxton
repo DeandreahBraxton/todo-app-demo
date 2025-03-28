@@ -1,0 +1,54 @@
+# Done: add numbers to the items when I print them out
+# Done: delete item from the list
+# Done: edit an item in the list
+# Done: print in color (q: does it need a special library? a: yes, termcolor, for mac)
+
+import os # import the 'os' library
+import sys
+from termcolor import colored, cprint #pip3 install termcolor (if you don't have it, also for python 3)
+# from colorama import init (for windows)
+
+def my_clear_func():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+my_clear_func()
+print(colored("Welcome to my to-do list app!", "green", attrs=["bold", "underline", "dark"]))
+
+my_list = []
+
+while True:
+     print(colored("My List:", "light_blue"))
+     for index, item in enumerate(my_list, start=1):
+            print("{}: {}".format(index, item))
+
+     new_item = input(colored("Please enter a new item, 'r <number>', 'e <number> <new text>' to edit or 'q' to quit e: ", "light_magenta"))
+
+     if new_item == 'q':
+        print("Goodbye!")
+        break
+     elif new_item.startswith("r "):
+        try:
+            index = int(new_item[2:]) - 1
+            if 0 <= index < len(my_list):
+                removed_item = my_list.pop(index)
+                my_clear_func()
+                print("Removed item: {}".format(removed_item))
+            else:
+                print("Invalid number try again!")
+        except ValueError:
+            print("Invalid format try 'r <number>' to remove item")
+     elif new_item.startswith("e "):
+        try:
+            parts = new_item.split(" ")
+            index = int(parts[1]) - 1
+            if 0 <= index < len(my_list):
+                my_list[index] = " ".join(parts[2:])
+                my_clear_func()
+                print("Edited item: {}".format(my_list[index]))
+            else:
+                print("Invalid number try again!")
+        except ValueError:
+            print("Invalid format try 'e <number> <new text>' to edit item")
+     else:
+        my_list.append(new_item) 
+        my_clear_func()
